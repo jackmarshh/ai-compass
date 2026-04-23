@@ -1,137 +1,113 @@
-# AI Compass
+# RoleCard AI
 
-一个面向中文用户的 AI 技术词条站点，用更容易理解的方式解释常见概念，并把重要词条和入门教程串起来。
+RoleCard AI 是一个纯前端的 AI Roleplay Character Card Generator MVP，用来生成角色扮演机器人可用的角色卡草稿。
 
-当前版本聚焦两件事：
+第一版不接 AI API、不需要登录、不保存用户内容，也不依赖数据库。用户在浏览器里填写角色信息后，前端根据本地模板实时生成角色档案、开场白、对话示例、系统提示词、头像 Prompt 和可复制的导出内容。
 
-- 把 `Prompt`、`Agent`、`RAG`、`MCP` 这类技术词条讲清楚
-- 给部分词条补上可直接继续阅读的教程，避免“看懂名词但不知道下一步做什么”
+## 功能
 
-## 项目定位
-
-这个项目不是单纯的术语表，也不是单纯的教程站，而是一个更适合新手建立认知地图的内容型网站：
-
-- 先从 `词条` 理解技术概念
-- 再从 `教程` 学会怎么用
-- 必要时用 `场景` 帮助用户从需求切入
+- `Home`：面向 SEO 和转化的产品首页。
+- `Generator`：纯浏览器运行的角色卡生成器。
+- `Examples`：20 个静态角色示例，可一键作为生成器起点。
+- `FAQ`：覆盖 SillyTavern、Character AI、JanitorAI、roleplay prompt 等长尾问题。
+- 支持 `Markdown`、`Plain Text`、`SillyTavern-like JSON` 三种输出格式。
+- 支持日间 / 夜间主题切换。
+- 支持英文 / 中文界面切换，中文模式下生成内容也会使用中文模板。
+- 基础 SEO：页面 title、description、canonical、OpenGraph、FAQ schema。
 
 ## 技术栈
 
-- `Next.js 15`
-- `React 19`
-- `TypeScript`
-- `App Router`
-- `Markdown / MDX frontmatter` 内容系统
-- `react-markdown + remark-gfm` 渲染正文
-- `Vitest + Testing Library` 基础测试
+- Vite
+- React
+- TypeScript
+- CSS Variables
+- Hash-based single page routing
 
-## 已实现内容
-
-- 首页 `/`
-- 词条列表页 `/terms`
-- 词条详情页 `/terms/[slug]`
-- 教程列表页 `/tutorials`
-- 教程详情页 `/tutorials/[slug]`
-- 场景列表页 `/scenarios`
-- 场景详情页 `/scenarios/[slug]`
-- 关于页 `/about`
-- 兼容旧地址的重定向：
-  - `/concepts -> /terms`
-  - `/concepts/[slug] -> /terms/[slug]`
-
-## 本地启动
+## 本地运行
 
 ```bash
 npm install
 npm run dev
 ```
 
-默认开发地址：
+默认会启动 Vite 开发服务。打开终端输出里的本地地址即可预览。
 
-```txt
-http://localhost:3000
-```
-
-## 常用命令
+## 构建
 
 ```bash
-npm run dev
-npm run build
-npm run start
-npm test
-```
-
-## 目录结构
-
-```txt
-ai-compass/
-  app/                Next.js 路由与页面
-  components/         页面组件与内容模块
-  content/            词条 / 场景 / 教程内容
-  lib/                内容读取、SEO、工具函数
-  tests/              内容系统与页面基础测试
-  types/              类型定义
-```
-
-## 内容维护方式
-
-内容放在 `content/` 下，以 Markdown/MDX 文件组织。
-
-- `content/concepts/`：概念词条
-- `content/tutorials/`：教程文章
-- `content/scenarios/`：使用场景
-
-每篇内容使用 frontmatter 存储结构化元数据，正文用于实际展示内容。这样做的好处是：
-
-- 方便继续扩充内容
-- 方便生成列表页和详情页
-- 方便建立词条、教程、场景之间的互链
-
-## 当前内容方向
-
-这一版主要围绕中文 AI 技术词条库来做，后续会继续补齐这类主题：
-
-- `Prompt`
-- `Agent`
-- `RAG`
-- `MCP`
-- `Skill`
-- `Workflow`
-- `Knowledge Base`
-- `API`
-
-## 设计方向
-
-当前站点已经从偏“海外 SaaS 落地页”的视觉方向，调整为更偏中文内容站的表达方式：
-
-- 更强调信息层级和阅读感
-- 更适合术语解释与内容浏览
-- 首页以“词条入口 + 教程串联”为主
-
-后续还会继续优化首页结构和词条分类，让它更像一个真正可查可学的中文 AI 资料库。
-
-## SEO
-
-已包含基础 SEO 能力：
-
-- 页面 metadata
-- `robots.ts`
-- `sitemap.ts`
-- Open Graph 基础信息
-
-## 测试与验证
-
-提交前建议至少执行：
-
-```bash
-npm test
 npm run build
 ```
 
-## 后续计划
+构建产物会输出到 `dist/`。
 
-- 继续补全核心技术词条，优先 `RAG / MCP / Skill / Tool Calling`
-- 把首页进一步收敛成“AI 技术词条入口”
-- 增加更清晰的词条分类与关联阅读
-- 完善教程与词条的双向跳转
-- 持续优化中文视觉风格
+## 预览构建产物
+
+```bash
+npm run preview
+```
+
+## 项目结构
+
+```txt
+src/
+  App.tsx              # 页面、路由、主题和多语言状态
+  main.tsx             # React 入口
+  styles.css           # 全站样式、日夜主题变量、响应式布局
+  types.ts             # 内容和生成器类型
+  data/
+    examples.ts        # 20 个静态角色示例
+    faq.ts             # 英文 FAQ 数据
+  lib/
+    generator.ts       # 角色卡模板生成逻辑
+```
+
+## 生成器字段
+
+- Character Name
+- Gender / Identity
+- Personality
+- Backstory
+- Relationship with User
+- Scenario
+- Speaking Style
+- Tone：Friendly / Romantic / Dark / Funny / Fantasy
+- Output Format：Markdown / Plain Text / SillyTavern-like JSON
+
+## 输出内容
+
+- Character Profile
+- Personality
+- Backstory
+- First Message
+- Example Dialogues
+- System Prompt
+- Image Prompt
+- Tags
+
+## 部署
+
+这是一个静态前端项目，可以部署到 Vercel、Netlify、Cloudflare Pages 或任意静态托管服务。
+
+常见部署流程：
+
+```bash
+npm run build
+```
+
+然后将 `dist/` 作为静态站点目录发布。
+
+## 当前限制
+
+- 生成结果来自本地模板，不是真实 AI 模型生成。
+- 不保存用户生成过的角色卡。
+- 没有账户系统、支付系统、后端服务。
+- `SillyTavern-like JSON` 是便于复制和改写的近似结构，不是官方导出格式。
+
+## 后续方向
+
+- 接入 AI API，支持更自由的角色生成。
+- 支持保存、收藏和编辑历史角色卡。
+- 增加更多导出格式和平台适配。
+- 扩展示例库和 SEO 落地页。
+- 接入基础统计，观察生成点击和复制行为。
+
